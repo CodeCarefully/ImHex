@@ -89,6 +89,7 @@ namespace hex {
 
             if (ProjectFile::hasUnsavedChanges()) {
                 glfwSetWindowShouldClose(window, GLFW_FALSE);
+                this->getWindowOpenState() = true;
                 View::doLater([] { ImGui::OpenPopup("Save Changes"); });
             }
         });
@@ -748,7 +749,7 @@ R"(
         std::vector<u8> buffer(1024, 0x00);
         size_t dataSize = provider->getSize();
         for (u64 offset = 0; offset < dataSize; offset += 1024) {
-            size_t usedBufferSize = std::min(buffer.size(), dataSize - offset);
+            size_t usedBufferSize = std::min(u64(buffer.size()), dataSize - offset);
             provider->read(offset, buffer.data(), usedBufferSize);
 
             for (u64 i = 0; i < usedBufferSize; i++) {
@@ -786,7 +787,7 @@ R"(
         std::vector<u8> buffer(1024, 0x00);
         size_t dataSize = provider->getSize();
         for (u64 offset = 0; offset < dataSize; offset += 1024) {
-            size_t usedBufferSize = std::min(buffer.size(), dataSize - offset);
+            size_t usedBufferSize = std::min(u64(buffer.size()), dataSize - offset);
             provider->read(offset, buffer.data(), usedBufferSize);
 
             for (u64 i = 0; i < usedBufferSize; i++) {
